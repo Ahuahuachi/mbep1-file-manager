@@ -1,7 +1,7 @@
 """File management"""
 
 
-def create(file_name: str, content: str = None):
+def create(file_name: str, content: str = None) -> None:
     """Create a new text file
 
     Args:
@@ -25,7 +25,7 @@ def create(file_name: str, content: str = None):
     file.close()
 
 
-def update(file_name: str, content: str, overwrite: bool = False):
+def update(file_name: str, content: str, overwrite: bool = False) -> None:
     """Updates an existing file
 
     Args:
@@ -41,3 +41,17 @@ def update(file_name: str, content: str, overwrite: bool = False):
     file = open(file_name, mode)
     file.write(content)
     file.close()
+
+
+def read(file_name: str) -> str:
+    """Returns the content of a text file
+
+    Args:
+        file_name (str): File name or path
+
+    Returns(str): File content
+    """
+    file = open(file_name)
+    content = file.read()
+    file.close()
+    return content
