@@ -10,7 +10,14 @@ def create(file_name: str, content: str = None):
     """
     mode = "w" if content else "x"
 
-    file = open(file_name, mode)
+    try:
+        file = open(file_name, mode)
+
+    except FileExistsError as error:
+        raise OSError(f"File '{file_name}' already exists") from error
+
+    except PermissionError as error:
+        raise OSError(f"You do not hav permisson to create '{file_name}'") from error
 
     if content:
         file.write(content)
