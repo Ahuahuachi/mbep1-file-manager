@@ -1,3 +1,6 @@
+"""File management"""
+
+
 def create(file_name: str, content: str = None):
     """Create a new text file
 
