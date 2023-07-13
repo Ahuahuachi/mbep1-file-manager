@@ -33,6 +33,9 @@ def update(file_name: str, content: str, overwrite: bool = False):
         content (str): Text file content
         overwrite (bool, optional): If True, file will be overwritten. Defaults to False.
     """
+    if not isinstance(content, str) or content == "":
+        raise ValueError("'content' argument must be specified")
+
     mode = "w" if overwrite else "a"
 
     file = open(file_name, mode)
