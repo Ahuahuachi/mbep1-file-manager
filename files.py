@@ -1,8 +1,10 @@
 """File management"""
+import os
+import json
 
 
-def create(file_name: str, content: str = None) -> None:
-    """Create a new text file
+def create(file_name: str, content: list | dict = None) -> None:
+    """Create a new json file
 
     Args:
         file_name (str): File name or path
@@ -19,7 +21,8 @@ def create(file_name: str, content: str = None) -> None:
     except PermissionError as error:
         raise OSError(f"You do not hav permisson to create '{file_name}'") from error
 
-    if content:
+    if content and isinstance(content, (list, dict)):
+        content = json.dumps(content)
         file.write(content)
 
     file.close()
