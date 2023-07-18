@@ -28,7 +28,7 @@ def create(file_name: str, content: list | dict = None) -> None:
     file.close()
 
 
-def update(file_name: str, content: str, overwrite: bool = False) -> None:
+def update(file_name: str, content: list | dict) -> None:
     """Updates an existing file
 
     Args:
@@ -36,13 +36,29 @@ def update(file_name: str, content: str, overwrite: bool = False) -> None:
         content (str): Text file content
         overwrite (bool, optional): If True, file will be overwritten. Defaults to False.
     """
-    if not isinstance(content, str) or content == "":
+    if not isinstance(content, dict | list) or content == "":
         raise ValueError("'content' argument must be specified")
 
-    mode = "w" if overwrite else "a"
+    file = open(file_name)
+    file_content = json.loads(file.read())
+    file.close()
 
-    file = open(file_name, mode)
-    file.write(content)
+    if isinstance(file_content, list):
+        if isinstance(content, dict):
+            file_content.append(content)
+
+        elif isinstance(content, list):
+            file_content += content
+
+    elif isinstance(file_content, dict):
+        if isinstance(content, dict):
+            file_content = [file_content, content]
+
+        elif isinstance(content, list):
+            file_content = [file_content] + content
+
+    file = open(file_name, "w")
+    file.write(json.dumps(file_content))
     file.close()
 
 
