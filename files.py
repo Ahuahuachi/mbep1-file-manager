@@ -22,7 +22,9 @@ def create(file_name: str, content: list | dict = None) -> None:
         raise OSError(f"You do not hav permisson to create '{file_name}'") from error
 
     if content and isinstance(content, (list, dict)):
-        content = json.dumps(content)
+        if isinstance(content, dict):
+            content = [content]
+        content = json.dumps(content, indent=2)
         file.write(content)
 
     file.close()
@@ -62,7 +64,7 @@ def update(file_name: str, content: list | dict) -> None:
     file.close()
 
 
-def read(file_name: str) -> str:
+def read(file_name: str) -> list | dict:
     """Returns the content of a text file
 
     Args:
@@ -70,7 +72,11 @@ def read(file_name: str) -> str:
 
     Returns(str): File content
     """
+    if not os.path.exists(file_name):
+        raise FileNotFoundError(f"File {file_name} was not found")
+
     file = open(file_name)
     content = file.read()
+
     file.close()
-    return content
+    return json.loads(content)
